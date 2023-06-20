@@ -128,7 +128,7 @@ saveRDS(ref_coords, file="DATASET/ref_coords.rds")
 ##add code that check query input: 1) it is fasta 2) is AA when selecting blastp 3) no more than ?10 sequences
 if (B_type == "blastp") {
   blp <- blast(db=path_to_db_p, type = "blastp")
-query_p<-readAAStringSet(path_to_query_p)
+query_p<-readAAStringSet(path_to_query_p)  #put it earlier
 #RESULTS_p=run_blast(blp, query_p, Cpus, N_hits, Evalue, minPer_Iden, minPer_alg)
 RESULTS=run_blast(blp, query_p, Cpus, N_hits, Evalue, minPer_Iden, minPer_alg, B_type)
 }
@@ -142,7 +142,7 @@ if (B_type == "blastn") {
 
 
 ###ADD code handling if no hit
-
+# one hit at the time
 query_name=names(RESULTS)
 Selected_hit=vector(length = length(query_name))
 for (q in 1:length(query_name)){
