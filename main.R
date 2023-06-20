@@ -177,6 +177,6 @@ map<-leaflet(hit_seqs) %>% addTiles() %>% addCircles() %>%
              #labelOptions(textOnly = T) 
              )
 
-
+#add KEG tables (no map)
 
 
