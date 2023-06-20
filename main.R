@@ -9,19 +9,20 @@ library(sp)
 library(data.table)
 
 #parameters defined by user
-N_hits=10
-minPer_Iden = 90
-minPer_alg= 90
-Evalue=1e-3
-B_type="blastn" #blastp, #in the future blastx, tblastn
+N_hits=10  #Rshiny input
+minPer_Iden = 90 #Rshiny input
+minPer_alg= 90 #Rshiny input
+Evalue=1e-3 #Rshiny input
+B_type="blastn" #blastp, #in the future blastx, tblastn #Rshiny input in a if (DNA, Protein)
 Cpus=4
 
-path_to_query_p="DATASET/USER_queryp.faa"
-path_to_query="DATASET/USER_query.fna" #"DATASET/queryn.fna"
+path_to_query_p="DATASET/USER_queryp.faa" # Path TO save when user provide the file 
+path_to_query="DATASET/USER_query.fna" #"DATASET/queryn.fna" # Path TO save when user provide the file 
 
-using_text = TRUE
+using_text = TRUE # dependend on user option
 if(B_type == "blastn" & using_text){
   #here we read the input from Shiny input text
+  #Function checking text is in fasta format, type, N sequences 
   text=">User1\nATCTATGATTTGGCGCAAGACGACTGGTATGCAAGCTCCCAATTAGAAGAAATATACAACCTTATATCAACATCAGAAAAGATACCTCAATTGGACGGTTGGGCAATTAACAAGACTGACAGCAGATGTGCCAAGTCTTGA\n>User2\nCGCGCGCGGTGCTACGGCGGGGCGGGGCCGGTGGGGACCGGTCCCATACAACGCCCTACTTACACAAACATAGTGTCCGTCATGAAGTGTGCTGTTCCAGGTACAGCTGGCGTGGAGCAGCGGCACATGCCATTTAAAGTACATGCGTCCATAAGTAGCATGAGCAAATTGTATGTACAGCTAAAGCCGCGTATCATAGGTAACCCGTATGAGGTATGTACATGA"
   fwrite(as.list(text), file=path_to_query, quote = F)
 } else { #save input file uploaded by the user to path_to_query 
@@ -34,7 +35,7 @@ if(B_type == "blastp" & using_text){
 } else { #save input file uploaded by the user to path_to_query_p 
 } 
 
-
+# Remove this part when data is alredy available
 ## WE should provide these paths. TO be DONE only once
 path_to_db_p = "BAGS/AA/bags_v1_proteins.faa" #"DATASET/AA/proteins.faa"
 path_to_db = "BAGS/DNA/bags_v1_genes.fna" # "DATASET/DNA/genes.fna"
