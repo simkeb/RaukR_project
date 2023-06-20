@@ -148,6 +148,20 @@ Selected_hit[q] <- RESULTS[[query_name[q]]]$SubjectID #Selected by user after bl
 }
 Annotation_and_taxonomy_result <- big_tbl %>% filter(GeneID %in% Selected_hit) #OUTPUT Annotation PER HIT/sequence
 
+####KEGG pathway list
+library(tidyverse)
+library(magrittr)
+#install.packages("KEGGREST")
+library(KEGGREST)
+
+# Get the KEGG map for K09490
+kegg_id<-Annotation_and_taxonomy_result$KEGG
+kegg_info <- keggGet(kegg_id)
+kegg_info <- kegg_info %>%
+  transpose() %>%
+  as_tibble() 
+kegg_map <- kegg_info$PATHWAY[[1]]%>% as_tibble()
+print(kegg_map)
 
 ###LOCALISATION
 
