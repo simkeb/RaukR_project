@@ -25,15 +25,13 @@ if(B_type == "blastn" & using_text){
   #Function checking text is in fasta format, type, N sequences 
   text=">User1\nATCTATGATTTGGCGCAAGACGACTGGTATGCAAGCTCCCAATTAGAAGAAATATACAACCTTATATCAACATCAGAAAAGATACCTCAATTGGACGGTTGGGCAATTAACAAGACTGACAGCAGATGTGCCAAGTCTTGA\n>User2\nCGCGCGCGGTGCTACGGCGGGGCGGGGCCGGTGGGGACCGGTCCCATACAACGCCCTACTTACACAAACATAGTGTCCGTCATGAAGTGTGCTGTTCCAGGTACAGCTGGCGTGGAGCAGCGGCACATGCCATTTAAAGTACATGCGTCCATAAGTAGCATGAGCAAATTGTATGTACAGCTAAAGCCGCGTATCATAGGTAACCCGTATGAGGTATGTACATGA"
   fwrite(as.list(text), file=path_to_query, quote = F)
-} else { #save input file uploaded by the user to path_to_query 
-  } 
+} # else { #save input file uploaded by the user to path_to_query } 
  
 if(B_type == "blastp" & using_text){
   #here we read the input from Shiny input text
   text=">User1\nMPDTGDIRTSSGTFLSRHQDPDGVLEKIERRIADATHVPYTHGEPFNVLRYTPGQKYDSHYDTFDPVSYGVQTSQRVASFLLYLTDVEEGGETHFPLEGRNGLERLKNIDYKSCDGGLLVRPRAGDALLFWNVFPNATFDKHALHGGCPVTKGEKWVATKWIRDKSFGKA*\n>User2\nMRKRLAQFRKLGRTPQHKWAMLRNMVTSLIKHERIKTTLPKAKELRHLADKVIGYAKKPNQTYGKQLALQVVTEKPMVTKLMEVLGPRYADRDGGYTRVLKLSRPRRGDNAPMAIIEYVDRPGEVRAARVPE"
   fwrite(as.list(text), file=path_to_query_p, quote = F)
-} else { #save input file uploaded by the user to path_to_query_p 
-} 
+} #else { #save input file uploaded by the user to path_to_query_p } 
 
 # Remove this part when data is alredy available
 ## WE should provide these paths. TO be DONE only once
