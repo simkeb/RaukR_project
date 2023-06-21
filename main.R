@@ -190,5 +190,86 @@ map<-leaflet(hit_seqs) %>% addTiles() %>% addCircles() %>%
              )
 
 #add KEG tables (no map)
+######################## plot of logo in r####################################
+library(png)
+library(ggplot2)
+library(tidyverse)
+library(data.table)
+getTextImage <- function(text) {
+  filename <- tempfile()
+  png(filename = filename)
+  plot.new()
+  cex <- 1
+  repeat {
+    if (strwidth(text, cex = 2*cex) > 1) break
+    if (strheight(text, cex = 2*cex) > 1) break 
+    cex <- 2*cex
+  }
+  text(0.5, 0.5, text, cex = cex)
+  dev.off()
+  image <- readPNG(filename)
+  unlink(filename)    # clean up file
+  if (length(dim(image)) == 3)
+    image <- image[,,1] # just keep one channel
+  image
+}
+
+randomText <- function(n, text) {
+  image <- getTextImage(text)
+  nx <- dim(image)[1]
+  ny <- dim(image)[2]
+  hits <- 0
+  x <- y <- numeric(n)
+  while (hits < n) {
+    tryx <- runif(1)
+    tryy <- runif(1)
+    keep <- image[round((nx-1)*tryx + 1), round((ny-1)*tryy + 1)] == 0
+    if (keep) {
+      hits <- hits + 1
+      # Need to rotate so it looks good
+      x[hits] <- tryy
+      y[hits] <- 1 - tryx
+    }
+  }
+  cbind(x, y)
+}
+
+data<-data.frame(randomText(1000, "BAGS"))
+
+
+p1 <- ggplot(data) +
+  geom_point(aes(x = x, y = y), colour = "green", shape=23,size = 2) +
+  labs( subtitle = "BAltic Gene Set gene catalogue")
+
+p1<-p1+theme_void()+
+theme(plot.subtitle=element_text(size=18, hjust=0.5, face="italic", color="green"))
+print(p1)
+############################################
+# Just to prove that the maths works, plot the hexagon described by unit length
+path <- data.frame(Pro = c(1,1,0,0,0,1,1), Cla = c(0,1,1,1,0,0,0), Neu = c(0,0,0,1,1,1,0))
+pd<-path %>%
+  mutate(S1_x = Pro*cos(pi/2), S1_y = Pro*sin(pi/2), 
+         S2_x = Cla*cos(pi/6), S2_y = -Cla*sin(pi/6), 
+         S3_x = -Neu*cos(pi/6), S3_y = -Neu*sin(pi/6)) %>% 
+  mutate(x = S1_x + S2_x + S3_x, y = S1_y + S2_y + S3_y)
+pd$z<-c(1.2,0.8, 1.2,0.8,1.2, 0.8, 1.2)
+pd$w<-seq(0.8,2.4,by=0.25)
+#ggplot(aes(x = x, y=y))+geom_path()
+dt.triangle2 <- data.table(group = c(1,1,1), polygon.x = c(1.5,2.54,2.54), polygon.y = c(0.4,0.4 ,1))
+dt.triangle1 <- data.table(group = c(1,1,1), polygon.x = c(0.5,0.5,1.5), polygon.y = c(1 ,0.4 ,0.4))
+
+data<-data.frame(randomText(1000, "RaukR"))
+p2 <- ggplot(data) +
+  geom_point(aes(x = x*2.9, y = y*2.9), colour = "black", shape=23,size = 1.5) 
+
+p2<-p2+geom_bar(data=pd,aes(x=w,y=z), fill="darkcyan",stat = "identity", position = "dodge",width=.25)+
+  geom_polygon(data = dt.triangle1,aes(x=polygon.x,y=polygon.y,group=group),fill="white")+
+  geom_polygon(data = dt.triangle2,aes(x=polygon.x,y=polygon.y,group=group),fill="white")+
+  geom_rect(data=pd,aes(xmin=min(x+1.54), xmax=max(x+1.58), ymin=0, ymax=0.4), fill="white") +
+  geom_path(data=pd,aes(x=x+1.54,y=y+1.4), color="cyan3",linewidth=2)+
+  annotate(geom="text", x=1.56, y=0.65, label="2023",
+           color="black",size = 6)+
+theme_void()
+print(p2)
 
 
