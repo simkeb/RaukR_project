@@ -28,6 +28,7 @@ path_to_taxonomy_db = "DATASET/taxonomy.tsv"
 path_to_annot_db ="DATASET/annotations.tsv"
 path_to_metadata = "DATASET/BS_MAGv2_sample_metadata.tsv"
 
+
 if ( !file.exists("DATASET/big_tbl.rds") ) {
 
   tax <- read_tsv(path_to_taxonomy_db, show_col_types = FALSE, col_names=F)
@@ -41,7 +42,7 @@ if ( !file.exists("DATASET/big_tbl.rds") ) {
 
   ann <- ann %>% rowwise() %>% mutate(KEGG = KEEG_list(EggNOG_annotation, ","))
   big_tbl <- tax %>%  full_join(ann, by = "GeneID")
-
+  saveRDS(tax, file="DATASET/tax.rds")
   saveRDS(big_tbl, file="DATASET/big_tbl.rds")
 
 }
